@@ -1,0 +1,7 @@
+{
+    "smtp": {
+        "server": "",
+        "login": "",
+        "pass": ""
+    }
+}
