@@ -1,7 +1,9 @@
 {
-    "smtp": {
-        "server": "",
-        "login": "",
-        "pass": ""
+    "api":{
+        "smtp": {
+            "server": "",
+            "login": "",
+            "pass": ""
+        }
     }
 }
