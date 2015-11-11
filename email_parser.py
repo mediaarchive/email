@@ -1,7 +1,7 @@
 import base64
 
 def subject_decode(subject):
-    subject = subject.replace('Subject: ', '').replace('=?utf-8?b?', '').replace('?=', '').replace("\r\n", '')
+    subject = subject.decode().replace('Subject: ', '').replace('=?utf-8?b?', '').replace('?=', '').replace("\r\n", '')
     arr = subject.split(' ')
     subject_str = ''
     

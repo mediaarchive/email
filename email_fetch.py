@@ -6,18 +6,18 @@ import config
 def start():
     global config
     try:
-        print 'connecting'
+        print('connecting')
         imap = IMAP4_SSL(config.main['api']['imap']['host'])
-        print 'loggin in'
+        print('loggin in')
         imap.login(config.main['api']['imap']['user'], config.main['api']['imap']['pass'])
-        print 'logged'
+        print('logged')
         
-    except imaplib.IMAP4.abort, e:
-        print 'imap abort:', e
+    except imaplib.IMAP4.abort as e:
+        print('imap abort:', e)
         sys.exit()
         
-    except imaplib.IMAP4.error, e:
-        print "imap login failed:", e
+    except imaplib.IMAP4.error as e:
+        print("imap login failed:", e)
         sys.exit(1)
         
     else:
@@ -31,4 +31,4 @@ def start():
         
         subject = mail[1][0][1]
         
-        print "\t" + email_parser.subject_decode(subject)
+        print("\t" + email_parser.subject_decode(subject))
