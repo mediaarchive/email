@@ -1,8 +1,9 @@
 from imaplib import IMAP4_SSL
-import email
 import email_parser
 import imaplib
 import config
+
+
 def start():
     global config
     try:
@@ -28,7 +29,9 @@ def start():
     
     for id in ids[0].split():
         mail = imap.fetch(id, '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
-        
         subject = mail[1][0][1]
         
-        print("\t" + email_parser.subject_decode(subject))
+        print("\t" + id.decode() + ' ' + email_parser.subject_decode(subject))
+        
+        mail = imap.fetch(id, 'RFC822.TEXT')
+        print(email_parser.content_parse(mail))
