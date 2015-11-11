@@ -2,15 +2,14 @@ from imaplib import IMAP4_SSL
 import email
 import email_parser
 import imaplib
-
-global config
+import config
 def start():
     global config
     try:
         print 'connecting'
-        imap = IMAP4_SSL(config['api']['imap']['host'])
+        imap = IMAP4_SSL(config.main['api']['imap']['host'])
         print 'loggin in'
-        imap.login(config['api']['imap']['user'], config['api']['imap']['pass'])
+        imap.login(config.main['api']['imap']['user'], config.main['api']['imap']['pass'])
         print 'logged'
         
     except imaplib.IMAP4.abort, e:
