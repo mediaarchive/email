@@ -1,0 +1,25 @@
+{
+  "name": "mediaarchiveemail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atnartur/mediaarchiveemail.git"
+  },
+  "author": "atnartur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atnartur/mediaarchiveemail/issues"
+  },
+  "homepage": "https://github.com/atnartur/mediaarchiveemail#readme",
+  "dependencies": {
+    "async": "^1.5.0",
+    "iconv-lite": "^0.4.13",
+    "inbox": "^1.1.59",
+    "yandex-disk": "0.0.7"
+  }
+}
