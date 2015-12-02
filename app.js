@@ -5,6 +5,10 @@
 
 var inbox = require("inbox");
 var iconv = require('iconv-lite');
+var async = require('async');
+var fs = require('fs');
+
+iconv.extendNodeEncodings();
 
 global.config = require('./config.json');
 
@@ -20,22 +24,23 @@ imap.on("connect", function(){
     console.log("Successfully connected to server");
 
     imap.openMailbox('INBOX', function(err, info){
-        imap.search({header: ['subject', '']}, function(err, messages){
-            console.log(messages);
-        });
-        //imap.listMessages(-100, function(err, messages){
+        imap.search({unseen: true}, function(err, emails){
 
-        //console.log(messages[0]);
-        //var stream = imap.createMessageStream(messages[0].UID);
-        //var string = ''
-        //stream.on('data',function(buffer){
-        //    var part = buffer.toString('win1251');
-        //    string += part;
-        //});
-        //
-        //stream.on('end',function(){
-        //    console.log('final output ' + string);
-        //});
-        //})
-    })
+            async.eachSeries(emails, function (item, callback) { // iterator
+                var stream = imap.createMessageStream(item);
+                var string = '';
+                stream.on('data',function(buffer){
+                    string += buffer.toString('win1251');
+                });
+
+                stream.on('end',function(){
+                    fs.writeFile('temp/' + (new Date()).getTime() + '.tmp', string);
+                    console.log('processed');
+                    callback();
+                });
+            }, function() { // done
+
+            });
+        });
+    });
 });
