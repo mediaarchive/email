@@ -2,6 +2,7 @@
   "api":{
     "imap": {
       "host": "",
+      "port": "",
       "user": "",
       "pass": ""
     }
