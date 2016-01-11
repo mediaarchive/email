@@ -21,6 +21,10 @@
     "iconv-lite": "^0.4.13",
     "inbox": "^1.1.59",
     "mailparser": "^0.5.3",
+    "md5": "^2.0.0",
+    "yandex-disk": "0.0.7"
+  },
+  "devDependencies": {
     "yandex-disk": "0.0.7"
   }
 }
