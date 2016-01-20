@@ -22,6 +22,7 @@
     "inbox": "^1.1.59",
     "mailparser": "^0.5.3",
     "md5": "^2.0.0",
+    "moment": "^2.11.1",
     "yandex-disk": "0.0.7"
   },
   "devDependencies": {

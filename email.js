@@ -1,3 +1,8 @@
+var MailParser = require("mailparser").MailParser;
+var async = require('async');
+var inbox = require("inbox");
+var iconv = require('iconv-lite');
+
 module.exports = {
     config: {
         port: '',
@@ -5,14 +10,14 @@ module.exports = {
         user: '',
         pass: ''
     },
-    start: function(){
+    start: function(finish_callback){
         var self = this;
         new Promise(function(resolve, reject) {
-            var imap = inbox.createConnection(self.port, self.host, {
+            var imap = inbox.createConnection(self.config.port, self.config.host, {
                 secureConnection: true,
                 auth:{
-                    user: self.user,
-                    pass: self.pass
+                    user: self.config.user,
+                    pass: self.config.pass
                 }
             });
             imap.connect();
@@ -39,64 +44,9 @@ module.exports = {
                                     //console.log("From:", mail_object.from); //[{address:'sender@example.com',name:'Sender Name'}]
                                     //console.log("Subject:", mail_object.subject); // Hello world!
                                     //console.log("Text body:", mail_object.text); // How are you today?
-                                    console.log(mail_object);
+                                    //console.log(mail_object);
                                     
-                                    var data = {
-                                        authors: []
-                                    };
-                                    data.authors.push(mail_object.from[0]);
-                                    
-                                
-                                    var dir = path.normalize('temp/' + md5(mail_object.messageId) + '/');
-                                    try {
-                                        fs.mkdirSync(dir);
-                                    }
-                                    catch(e) {
-                                        console.log('message temp dir already exist');
-                                    }
-                                    
-                                    console.log(dir);
-                                    var data_path = path.normalize(dir + '/data.json');
-                                    fs.writeFileSync(data_path, JSON.stringify(data));
-                                    
-                                    var txt_path = path.normalize(dir + '/text.txt');
-                                    fs.writeFileSync(txt_path, mail_object.text);
-                                    
-                                    var photo_dir_created = false;
-                                    var photo_dir_base_path = path.normalize(dir + '/фото/');
-                                    var photo_dir_path = path.normalize(photo_dir_base_path + data.authors[0].name + '/');
-                                    
-                                    function create_photo_dir() {
-                                        if (photo_dir_created === true) 
-                                            return;
-                                        
-                                        photo_dir_created = true;
-                                        fs.mkdirSync(photo_dir_base_path);
-                                        fs.mkdirSync(photo_dir_path);
-                                    }
-                                    
-                                    mail_object.attachments.forEach(function(attachment){
-                                        var ext = path.extname(attachment.fileName).replace('.', '').toLowerCase();
-                                        var file_dir = dir;
-                                        
-                                        switch (ext) {
-                                            case 'jpg': case 'png': case 'gif':
-                                                create_photo_dir();
-                                                file_dir = photo_dir_path;
-                                                break;
-                                        }
-                                        
-                                        var file_path = path.normalize(file_dir + '/' + attachment.fileName);
-                                        
-                                        if (fs.existsSync(file_path)) {
-                                            var file_name = path.basename(attachment.fileName) + ' (' + (new Date()).getTime() + ')';
-                                            
-                                            var file_path = path.normalize(file_dir + '/' + file_name + '.' + ext);
-                                        }
-                                        
-                                        fs.writeFileSync(file_path, attachment.content);
-                                    });
-                                    
+                                    global.sort.start(mail_object);
                                     callback();
                                 });
                                 
@@ -106,7 +56,9 @@ module.exports = {
                                 console.log('processed');
                             });
                         }, function() { // done
-                            
+                            console.log('finished');
+                            finish_callback();
+                            // @TODO: посылать в finish_callback информацию о письмах
                         });
                     }); // imap search
                 }); // imap.openMailbox

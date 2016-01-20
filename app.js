@@ -2,14 +2,10 @@
  * Created by ClienDDev team (clienddev.ru)
  * Developer: Artur Atnagulov (atnartur)
  */
-
-var inbox = require("inbox");
 var iconv = require('iconv-lite');
-var async = require('async');
-var fs = require('fs');
 var path = require('path');
-var md5 = require('md5');
-var MailParser = require("mailparser").MailParser;
+var fs = require('fs');
+
 var YandexDisk = require('yandex-disk').YandexDisk;
 
 var temp_dir = path.normalize('temp/');
@@ -24,4 +20,12 @@ catch(e) {
 iconv.extendNodeEncodings();
 
 global.config = require('./config.json');
+
+var email = require('./email');
+
+email.config = global.config.api.imap;
+email.start();
+
+global.sort = require('./sort');
+global.sort.root_dir = 'temp/';
 
