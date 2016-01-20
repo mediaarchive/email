@@ -12,7 +12,7 @@ module.exports = {
         root_dir
     },
     start: function(finish_callback){
-        global.sort.root_dir = this.root_dir; // КОСТЫЛЬ!!!!
+        global.sort.root_dir = this.config.root_dir; // КОСТЫЛЬ!!!!
         var self = this;
         new Promise(function(resolve, reject) {
             var imap = inbox.createConnection(self.config.port, self.config.host, {
