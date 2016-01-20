@@ -9,7 +9,7 @@ module.exports = {
         host: '',
         user: '',
         pass: '',
-        root_dir
+        root_dir: ''
     },
     start: function(finish_callback){
         global.sort.root_dir = this.config.root_dir; // КОСТЫЛЬ!!!!
