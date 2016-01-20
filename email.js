@@ -8,9 +8,11 @@ module.exports = {
         port: '',
         host: '',
         user: '',
-        pass: ''
+        pass: '',
+        root_dir
     },
     start: function(finish_callback){
+        global.sort.root_dir = this.root_dir; // КОСТЫЛЬ!!!!
         var self = this;
         new Promise(function(resolve, reject) {
             var imap = inbox.createConnection(self.config.port, self.config.host, {
