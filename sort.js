@@ -23,8 +23,12 @@ module.exports = {
             } catch(e) {}
         });
         
+        var name = mail_object.subject;
+        
+        if (typeof name === 'undefined') 
+            name = 'Неизвестное мероприятие от ' + moment().format('HH.mm.ss');
     
-        var dir = path.normalize(list_of_dirs[list_of_dirs.length - 1] + '/' + phpjs.trim(mail_object.subject) + '/');
+        var dir = path.normalize(list_of_dirs[list_of_dirs.length - 1] + '/' + phpjs.trim(name) + '/');
         try {
             fs.mkdirSync(dir);
         }
@@ -47,8 +51,15 @@ module.exports = {
                 return;
             
             photo_dir_created = true;
-            fs.mkdirSync(photo_dir_base_path);
-            fs.mkdirSync(photo_dir_path);
+            
+            try {
+                fs.mkdirSync(photo_dir_base_path);
+            }
+            catch(e){}
+            try {
+                fs.mkdirSync(photo_dir_path);
+            }
+            catch(e) {}
         }
         if (typeof mail_object.attachments !== 'undefined') {
             mail_object.attachments.forEach(function(attachment){
