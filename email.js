@@ -63,7 +63,8 @@ module.exports = {
                             });
                         }, function() { // done
                             console.log('finished');
-                            finish_callback();
+                            if (typeof finish_callback !== 'undefined') 
+                                finish_callback();
                             // @TODO: посылать в finish_callback информацию о письмах
                         });
                     }); // imap search
