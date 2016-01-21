@@ -12,14 +12,19 @@ module.exports = {
         root_dir: ''
     },
     start: function(finish_callback){
-        global.sort.root_dir = this.config.root_dir; // КОСТЫЛЬ!!!!
+        for (var key in this.config) {
+            if (typeof this.config[key] !== 'undefined' && this.config[key] != '') {
+                global.config[key] = this.config[key];
+            }
+        }
+        
         var self = this;
         new Promise(function(resolve, reject) {
-            var imap = inbox.createConnection(self.config.port, self.config.host, {
+            var imap = inbox.createConnection(global.config.port, global.config.host, {
                 secureConnection: true,
                 auth:{
-                    user: self.config.user,
-                    pass: self.config.pass
+                    user: global.config.user,
+                    pass: global.config.pass
                 }
             });
             imap.connect();
@@ -28,7 +33,6 @@ module.exports = {
             
                 imap.openMailbox('INBOX', function(err, info){
                     imap.search({unseen: true}, true, function(err, emails){
-            
                         async.eachSeries(emails, function (item, callback) { // iterator
                             console.log(emails, item);
                             var stream = imap.createMessageStream(item);
@@ -59,7 +63,8 @@ module.exports = {
                             });
                         }, function() { // done
                             console.log('finished');
-                            finish_callback();
+                            if (typeof finish_callback !== 'undefined') 
+                                finish_callback();
                             // @TODO: посылать в finish_callback информацию о письмах
                         });
                     }); // imap search

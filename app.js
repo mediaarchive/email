@@ -3,10 +3,8 @@
  * Developer: Artur Atnagulov (atnartur)
  */
 var iconv = require('iconv-lite');
-var path = require('path');
 var fs = require('fs');
-
-var YandexDisk = require('yandex-disk').YandexDisk;
+var path = require('path');
 
 var temp_dir = path.normalize('temp/');
 try {
@@ -16,16 +14,12 @@ catch(e) {
     console.log('temp dir already exist');
 }
 
-
 iconv.extendNodeEncodings();
 
 global.config = require('./config.json');
 
-var email = require('./email');
+var module = require('./module');
 
-email.config = global.config.api.imap;
-email.start();
-
-global.sort = require('./sort');
-global.sort.root_dir = 'temp/';
-
+module.email.config = global.config.api.imap;
+module.email.config.root_dir = 'temp/';
+module.email.start();
