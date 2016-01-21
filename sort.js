@@ -2,9 +2,9 @@ var path = require('path');
 var md5 = require('md5');
 var moment = require('moment');
 var fs = require('fs');
+var phpjs = require('phpjs');
 
 module.exports = {
-    root_dir: '',
     start: function(mail_object){ // files from email
         var data = {
             authors: []
@@ -12,9 +12,9 @@ module.exports = {
         data.authors.push(mail_object.from[0]);
         
         var list_of_dirs = [
-            this.root_dir + '/' + moment().format('YYYY') + '/',
-            this.root_dir + '/' + moment().format('YYYY') + '/' + moment().format('MM') + '/',
-            this.root_dir + '/' + moment().format('YYYY') + '/' + moment().format('MM') + '/' + moment().format('DD') + '/'
+            global.config.root_dir + '/' + moment().format('YYYY') + '/',
+            global.config.root_dir + '/' + moment().format('YYYY') + '/' + moment().format('MM') + '/',
+            global.config.root_dir + '/' + moment().format('YYYY') + '/' + moment().format('MM') + '/' + moment().format('DD') + '/'
         ];
 
         list_of_dirs.forEach(function(dir){
@@ -24,7 +24,7 @@ module.exports = {
         });
         
     
-        var dir = path.normalize(list_of_dirs[list_of_dirs.length - 1] + '/' + mail_object.subject + '/');
+        var dir = path.normalize(list_of_dirs[list_of_dirs.length - 1] + '/' + phpjs.trim(mail_object.subject) + '/');
         try {
             fs.mkdirSync(dir);
         }
