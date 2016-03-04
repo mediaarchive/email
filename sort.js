@@ -23,7 +23,7 @@ module.exports = {
             } catch(e) {}
         });
         
-        var name = mail_object.subject.replace('"', '');
+        var name = mail_object.subject.replace(new RegExp('"', 'g'), '');
         
         
         if (typeof name === 'undefined') 
