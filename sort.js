@@ -23,7 +23,8 @@ module.exports = {
             } catch(e) {}
         });
         
-        var name = mail_object.subject;
+        var name = mail_object.subject.replace('"', '');
+        
         
         if (typeof name === 'undefined') 
             name = 'Неизвестное мероприятие от ' + moment().format('HH.mm.ss');
