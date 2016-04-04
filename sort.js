@@ -23,13 +23,15 @@ module.exports = {
             } catch(e) {}
         });
         
-        var name = mail_object.subject
-            .replace(new RegExp('"', 'g'), '')
-            .replace(new RegExp(':', 'g'), '');
-        
+        var name = mail_object.subject;
         
         if (typeof name === 'undefined') 
             name = 'Неизвестное мероприятие от ' + moment().format('HH.mm.ss');
+        else
+            name = name
+                .replace(new RegExp('"', 'g'), '')
+                .replace(new RegExp(':', 'g'), '');
+        
     
         var dir = path.normalize(list_of_dirs[list_of_dirs.length - 1] + '/' + phpjs.trim(name) + '/');
         try {
