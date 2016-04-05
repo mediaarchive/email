@@ -33,7 +33,7 @@ module.exports = {
             
                 imap.openMailbox('INBOX', function(err, info){
                     imap.search({unseen: true}, true, function(err, emails){
-                        async.eachSeries(emails, function (item, callback) { // iterator
+                        async.eachSeries(emails, function (item, callback) { // iterator on UIDs of emails
                             console.log(emails, item);
                             var stream = imap.createMessageStream(item);
                             var string = '';
@@ -42,17 +42,16 @@ module.exports = {
                             });
             
                             stream.on('end',function(){
-                                //fs.writeFile('temp/' + (new Date()).getTime() + '.tmp', string);
-            
                                 var mailparser = new MailParser();
             
                                 mailparser.on("end", function(mail_object){
-                                    //console.log("From:", mail_object.from); //[{address:'sender@example.com',name:'Sender Name'}]
-                                    //console.log("Subject:", mail_object.subject); // Hello world!
-                                    //console.log("Text body:", mail_object.text); // How are you today?
-                                    //console.log(mail_object);
-                                    
                                     global.sort.start(mail_object);
+
+                                    imap.addFlags(item, ["\\Seen"], function(err, flags){
+                                        if(err)
+                                            console.error('error in setting flags of email', err);
+                                    });
+                                    
                                     callback();
                                 });
                                 
