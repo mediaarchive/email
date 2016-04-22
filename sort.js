@@ -31,7 +31,7 @@ module.exports = {
             name = name
                 .replace(new RegExp('"', 'g'), '')
                 .replace(new RegExp(':', 'g'), '')
-                .replace(new RegExp('.', 'g'), '');
+                .replace(new RegExp('\.', 'g'), '');
         
     
         var dir = path.normalize(list_of_dirs[list_of_dirs.length - 1] + '/' + phpjs.trim(name) + '/');
